@@ -1,0 +1,13 @@
+__pycache__/
+downloads/
+notes/
+baby_detection_ml/output/*/*
+*/hub/model/*
+baby_detection_ml/data/007*
+*/client/predictions
+logs/*
+
+*.log*
+.DS_Stores
+
+.env

@@ -1,0 +1,5 @@
+python-dotenv
+numpy
+librosa
+flask
+pydub

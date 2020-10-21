@@ -1,0 +1,14 @@
+[Unit]
+Description=The Fuss-o-meter
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 -u service.py
+WorkingDirectory=/home/pi/fom/src/client
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
