@@ -8,6 +8,6 @@ baby_detection_ml/data/007*
 logs/*
 
 *.log*
-.DS_Stores
+.DS_Store
 
 .env
