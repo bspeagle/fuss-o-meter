@@ -1,0 +1,174 @@
+---
+owner: brian.speagle
+version: 4.0
+optimized_for: claude-sonnet-4.6
+last_updated: 2026-03-31
+applies_to: all_repos
+strict: true
+---
+
+# 🚀 Windsurf Development Rules (v4.0)
+
+**Optimized for Claude Sonnet 4.6 with Extended Thinking**
+
+---
+
+## � Critical Rules (Never Break)
+
+1. **No automatic changes** — require explicit user approval before any change
+2. **Never commit secrets, credentials, or API keys**
+3. **Verify all technical claims** against official documentation before acting
+4. **300-line file limit** — refactor into modules/helpers/components if exceeded
+5. **Never guess or assume** — research and verify before proceeding
+
+---
+
+## 🧠 Extended Thinking Guidance (4.6-Specific)
+
+Extended thinking handles **internally** — no need to surface in output:
+- Confidence assessment and uncertainty evaluation
+- Multi-step reasoning and self-correction
+- Ambiguity resolution and contradiction detection
+- Tool selection and parallel operation planning
+
+**Use extended thinking for:**
+- Architecture decisions with multiple trade-offs
+- Debugging complex multi-file issues
+- Any change touching >3 files or >100 lines
+- Security-sensitive changes
+
+**Always surface in output:**
+- Decision rationale (concise, not verbose)
+- Identified risks or blockers
+- Approval requests with clear scope of change
+
+**No longer needed in visible output:**
+- ~~Verbose confidence assessments~~
+- ~~Explicit percentage confidence levels~~
+- ~~Step-by-step reasoning walkthroughs~~
+- ~~Redundant caveats and hedging~~
+
+**Agentic operations:**
+- Batch independent tool calls in parallel whenever possible
+- Sequential only when true dependencies exist between calls
+
+---
+
+## 💻 Code Quality
+
+- **Approval-first** — no changes without explicit user sign-off
+- **Simplicity** — avoid overengineering; simple over complex
+- **Style consistency** — follow existing language/framework conventions
+- **Error handling** — robust, informative error messages
+- **File limit** — max 300 lines; applies to Python, TypeScript, Go, Shell, HCL, etc.
+- **Dependencies** — verify against official docs before implementing; no assumptions about undocumented behavior
+
+---
+
+## 📚 Documentation Standards
+
+- **READMEs** — use `docs/templates/readme-template.md`; must include emojis, badges, mermaid diagrams, ToC, setup instructions, environment config, troubleshooting
+- **Update frequency** — update with every repository change
+
+### Terraform Variables
+
+Structure `variables.tf` with clear section headers:
+
+```hcl
+#===================================#
+#        < BASIC SETTINGS >         #
+#===================================#
+
+#===================================#
+#        < NETWORK SETTINGS >       #
+#===================================#
+
+#===================================#
+#        < TAGGING >                #
+#===================================#
+```
+
+---
+
+## 🔄 Git Workflow
+
+- Run `git status` before committing
+- **Commit messages** must include: what changed + why it changed + impact
+- **Branches**: `feature/[name]`, `bugfix/[name]`, `hotfix/[name]`
+- **PRs**: descriptive titles and descriptions, squash commits before merging, require code review
+
+---
+
+## 🛡️ Security & Infrastructure
+
+- ❌ **Never commit** secrets, credentials, or API keys
+- ✅ **Document** all infrastructure changes
+- ✅ **Maintain environment parity** (dev/staging/prod)
+- ✅ **Required docs**: access control policies, backup/recovery procedures, dependency update schedules
+
+---
+
+## 🔍 Verification Standards
+
+Before any change:
+1. Verify against official documentation (versions, syntax, compatibility, breaking changes)
+2. Surface uncertainties clearly — research before proceeding, never guess
+3. Request explicit approval — explain what changes, why, and highlight risks
+
+**Zero tolerance:**
+- ❌ Undocumented assumptions
+- ❌ Trial-and-error approaches
+- ❌ Proceeding without verification
+- ❌ Changes without approval
+
+---
+
+## ✅ Quality Assurance
+
+- Define clear acceptance criteria before starting
+- Maintain test coverage
+- Monitor performance metrics
+- Document all API endpoints
+- Regular security audits
+
+---
+
+## 🤝 Collaboration
+
+- **Code reviews**: mandatory for all changes
+- **Architecture decisions**: document rationale and trade-offs
+- **Communication**: clear, timely, and actionable
+
+---
+
+## 🗺️ devex-ai-gateway: AI Knowledge Base Enforcement
+
+This repo maintains a living knowledge base in `.ai/`. These rules apply to every session in this workspace and cannot be skipped.
+
+### Before every commit or PR — mandatory assessment
+
+You MUST check and update these files before any commit:
+
+| File | Update when |
+|------|-------------|
+| `.ai/plans/status.md` | **Always** — reflect current in-progress, blocked, and recently completed work |
+| `.ai/memory.md` | Architecture, AWS accounts, module structure, secret paths, or deployed state changed |
+| `.ai/specs/01-architecture.md` | New module added, delivery model changed, or key decisions made |
+| `.ai/specs/dataflow.md` | Request flow, secret path, IAM chain, or CI/CD flow changed |
+| `.ai/specs/product-spec.md` | Feature shipped, got blocked, or was descoped |
+| `.ai/agents/` | Tech stack decision, directory structure, or agent rule changed |
+| `.ai/standards/` | Validation pipeline, security requirements, or observability approach changed |
+
+### PR creation
+
+Always use the `/creating-pr` workflow (`.windsurf/workflows/creating-pr.md`) when opening a PR.
+Never skip the `.ai/` assessment step. Never open a PR without updating `status.md`.
+
+### This repo is pure IaC
+
+- No frontend, no backend application code
+- All infrastructure in `modules/` (Terraform) + `live/` (Terragrunt)
+- K8s manifests in `k8s/dev/` — ArgoCD delivers to workload cluster, not Terraform
+- ArgoCD app config changes go in `VersatermTechPlatform` repo via PR, never here
+- Pod Identity only — never IRSA
+- All secrets via ESO → Secrets Manager — never static env vars or Terraform defaults
